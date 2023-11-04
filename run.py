@@ -9,7 +9,7 @@ while True:
     an = an + 1
     an1 = an1 + 1
     an2 = an2 + 1
-    if an is 360:
+    if an == 360:
         break
 
     curr = time.time()
