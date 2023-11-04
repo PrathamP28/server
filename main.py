@@ -1,26 +1,34 @@
-import time
-from time import gmtime, strftime
-an = 0
-an1 = 2
-an2 = 4
-
+from http.server import HTTPServer, BaseHTTPRequestHandler
+HOST = "192.168.1.5"
+PORT = 9999
 while True:
-    time.sleep(60)
-    an = an + 1
-    an1 = an1 + 1
-    an2 = an2 + 1
-    if an is 360:
-        break
+    class Pratham(BaseHTTPRequestHandler):
 
-    curr = time.time()
-    s = strftime("%H:%M:%S", 
-             gmtime(curr))
+        def do_GET(self):
 
-    file = open("text.txt", "r")
-    r = file.read()
-    file.close()
+            file = open('text.txt', 'r')
+            a = file.read()
 
-    file = open("text.txt", "w")
-    a = file.write(f"""{r} 
-{s} a0 = {an} a1 = {an1} an2 = {an2}""")
-    file.close()
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            self.wfile.write(bytes(a, "utf-8"))
+
+        def do_POST(self):
+
+            file = open('key.txt', 'r')
+            a = file.read()
+
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            self.wfile.write(bytes(f"<html><body><h1>hello number {a}</h1></body></html> ", "utf-8"))
+            exit()
+
+    server = HTTPServer((HOST, PORT), Pratham)
+    print("Server Now Runing... ")
+
+    server.serve_forever()
+    server.server_close()
+
+    print("Server Stopped!")
